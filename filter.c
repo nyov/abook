@@ -890,7 +890,6 @@ static void
 mutt_parse_email(list_item item)
 {
 	char *line = item_fget(item, NAME);
-	char *tmp;
 	char *name, *email;
 #if 0
 	char *start = line;
@@ -898,9 +897,7 @@ mutt_parse_email(list_item item)
 #endif
 
 	mutt_fix_quoting(line);
-	tmp = strconcat("From: ", line, NULL);
-	getname(tmp, &name, &email);
-	free(tmp);
+	getname(line, &name, &email);
 
 	if(name)
 		item_fput(item, NAME, name);
@@ -917,9 +914,7 @@ mutt_parse_email(list_item item)
 	 */
 #if 0
 	while( (start = strchr(start, ',')) && i++ < MAX_EMAILS - 1) {
-		tmp = strconcat("From: ", ++start, NULL);
-		getname(tmp, &name, &email);
-		free(tmp);
+		getname(++start, &name, &email);
 		free(name);
 		if(email) {
 			if(*email) {

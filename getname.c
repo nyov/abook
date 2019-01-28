@@ -163,7 +163,7 @@ getname(char *line, char **namep, char **emailp)
 		   ** No '@' sign here so ...
 		 */
 		if (strchr(line, '(')) {	/* From: bob (The Big Guy) */
-			c = strchr(line, ':') + 1;
+			c = line;
 			while (*c == ' ' || *c == '\t')
 				c++;
 			for (i = 0; *c && *c != '(' && *c != ' ' &&
@@ -182,7 +182,7 @@ getname(char *line, char **namep, char **emailp)
 			 *    - check if From: uu.net!kent formatted line
 			 *    - check if "From: kent" formatted line
 			 */
-			c = strchr(line, ':') + 1;
+			c = line;
 			while (*c == ' ' || *c == '\t')
 				c++;
 			for (i = 0; *c && *c != ' ' && *c != '\t' &&
@@ -224,7 +224,7 @@ getname(char *line, char **namep, char **emailp)
 	 */
 
 	if (strchr(line, '<')) {
-		c = strchr(line, ':') + 1;
+		c = line;
 		while (*c == ' ' || *c == '\t')
 			c++;
 
@@ -268,7 +268,7 @@ getname(char *line, char **namep, char **emailp)
 		while (*c == ' ' || *c == '\t')
 			c++;
 	} else if (strchr(line, '[')) {
-		c = strchr(line, ':') + 1;
+		c = line;
 		while (*c == ' ' || *c == '\t')
 			c++;
 
