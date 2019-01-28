@@ -97,6 +97,11 @@ Read an e\-mail message from stdin and add the sender to the addressbook.
 \fB\-\-add\-email\-quiet\fP
 Same as \-\-add\-email but doesn't confirm adding.
 .TP
+\fB\-\-fields\fP \fI<fields>\fR
+Comma separated list of the mail fields to look for when adding email
+addresses.  Defaults to "from".  Adding most everything would be
+"from,to,cc".
+.TP
 \fB\-\-formats\fP
 List available formats.
 

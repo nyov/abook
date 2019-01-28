@@ -46,6 +46,7 @@ static void             init_mutt_query();
 static void		convert(char *srcformat, char *srcfile,
 				char *dstformat, char *dstfile);
 static void		add_email(int);
+static void		set_email_fields(char *fl);
 
 char *datafile = NULL;
 static char *rcfile = NULL;
@@ -314,6 +315,7 @@ parse_command_line(int argc, char **argv)
 		enum {
 			OPT_ADD_EMAIL,
 			OPT_ADD_EMAIL_QUIET,
+			OPT_EMAIL_FIELDS,
 			OPT_MUTT_QUERY,
 			OPT_CONVERT,
 			OPT_INFORMAT,
@@ -327,6 +329,7 @@ parse_command_line(int argc, char **argv)
 			{ "help", 0, 0, 'h' },
 			{ "add-email", 0, 0, OPT_ADD_EMAIL },
 			{ "add-email-quiet", 0, 0, OPT_ADD_EMAIL_QUIET },
+			{ "fields", 1, 0, OPT_EMAIL_FIELDS },
 			{ "datafile", 1, 0, 'f' },
 			{ "mutt-query", 1, 0, OPT_MUTT_QUERY },
 			{ "config", 1, 0, 'C' },
@@ -355,6 +358,9 @@ parse_command_line(int argc, char **argv)
 				break;
 			case OPT_ADD_EMAIL_QUIET:
 				change_mode(&mode, MODE_ADD_EMAIL_QUIET);
+				break;
+			case OPT_EMAIL_FIELDS:
+				set_email_fields(optarg);
 				break;
 			case 'f':
 				set_filename(&datafile, optarg);
@@ -792,12 +798,97 @@ add_email_add_item(int quiet, char *name, char *email)
 	return 1;
 }
 
+static char *default_email_fields[] = {
+	"from",
+	NULL
+};
+
+static char **email_fields = default_email_fields;
+
+static void
+set_email_fields(char *fl)
+{
+	char **f = email_fields;
+	unsigned int i, j, fieldcount = 1;
+
+	if(f != default_email_fields) {
+		free(f[0]);
+		free(f);
+	}
+	for(i = 0; fl[i]; i++) {
+		if(fl[i] == ',')
+			fieldcount++;
+	}
+	if(i == 0) {
+		fprintf(stderr, "No fields given\n");
+		exit(EXIT_FAILURE);
+	}
+	f = xmalloc(sizeof(char *) * (fieldcount + 1));
+	fl = xstrdup(fl);
+	f[0] = fl;
+	for(i = 0, j = 1; fl[i]; i++) {
+		if(fl[i] == ',') {
+			fl[i] = '\0';
+			if(strlen(f[j-1]) == 0) {
+			    fprintf(stderr, "Empty field given\n");
+			    exit(EXIT_FAILURE);
+			}
+			f[j++] = fl + i + 1;
+		}
+	}
+	if(strlen(f[j-1]) == 0) {
+	    fprintf(stderr, "Empty field given\n");
+	    exit(EXIT_FAILURE);
+	}
+	f[j] = NULL;
+	email_fields = f;
+}
+
+static char *
+mailaddr_prefix(char *line)
+{
+	unsigned int i;
+	char **f = email_fields;
+
+	for(i = 0; f[i]; i++) {
+		unsigned int len = strlen(f[i]);
+
+		if(strncasecmp(f[i], line, len) == 0 && line[len] == ':')
+			return line + len + 1;
+	}
+	return NULL;
+}
+
+static void
+add_email_list(char *line, int quiet)
+{
+	char *next;
+	char *name = NULL, *email = NULL;
+
+	while(line) {
+		while(isspace(*line))
+			line++;
+		if (!*line)
+			break;
+		next = strchr(line, ',');
+		if(next)
+			*next++ = '\0';
+		add_email_found++;
+		getname(line, &name, &email);
+		add_email_count += add_email_add_item(quiet,
+				name, email);
+		xfree(name);
+		xfree(email);
+		line = next;
+	}
+}
+
 static void
 add_email(int quiet)
 {
-	char *line;
-	char *name = NULL, *email = NULL;
+	char *line, *alist;
 	struct stat s;
+	bool in_email_list = FALSE;
 
 	if( (fstat(fileno(stdin), &s)) == -1 || S_ISDIR(s.st_mode) ) {
 		fprintf(stderr, _("stdin is a directory or cannot stat stdin\n"));
@@ -808,13 +899,15 @@ add_email(int quiet)
 
 	do {
 		line = getaline(stdin);
-		if(line && !strncasecmp("From:", line, 5) ) {
-			add_email_found++;
-			getname(line+5, &name, &email);
-			add_email_count += add_email_add_item(quiet,
-					name, email);
-			xfree(name);
-			xfree(email);
+		if(line) {
+			if (in_email_list && isspace(*line)) {
+				add_email_list(line, quiet);
+			} else if((alist = mailaddr_prefix(line))) {
+				add_email_list(alist, quiet);
+				in_email_list = TRUE;
+			} else {
+				in_email_list = FALSE;
+			}
 		}
 		xfree(line);
 	} while( !feof(stdin) );
