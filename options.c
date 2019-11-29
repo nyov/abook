@@ -1,7 +1,5 @@
 
 /*
- * $Id$
- *
  * by JH <jheinonen@users.sourceforge.net>
  *
  * Copyright (C) Jaakko Heinonen

@@ -43,5 +43,3 @@ Filters:
 * mutt import filter imports only first e-mail address
 
 * fseek in ldif import filter should be eliminated
-
-$Id$

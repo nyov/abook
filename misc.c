@@ -1,7 +1,5 @@
 
 /*
- * $Id$
- *
  * by JH <jheinonen@users.sourceforge.net>
  *
  * Copyright (C) Jaakko Heinonen
@@ -1259,7 +1257,7 @@ abook_list_replace(abook_list **list, int index, char *str)
 		free(cur);
 		return;
 	}
-	
+
 	while(1) {
 		if(!cur)
 			return;

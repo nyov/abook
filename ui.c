@@ -1,7 +1,5 @@
 
 /*
- * $Id$
- *
  * by JH <jheinonen@users.sourceforge.net>
  *
  * Copyright (C) Jaakko Heinonen
@@ -672,11 +670,12 @@ ui_merge_items()
 	refresh_list();
 }
 
-void		ui_remove_duplicates()
+void
+ui_remove_duplicates()
 {
 	if(statusline_ask_boolean(_("Remove duplicates"), FALSE))
 		remove_duplicates();
-	
+
 	clear_statusline();
 	refresh_list();
 }

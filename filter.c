@@ -1,7 +1,5 @@
 
 /*
- * $Id$
- *
  * by JH <jheinonen@users.sourceforge.net>
  *
  * Copyright (C) Jaakko Heinonen
@@ -849,7 +847,7 @@ mutt_read_line(FILE *in, char **groups, char **alias, char **rest)
 	if(n_groups && groups)
 		*groups = abook_list_to_csv(glist);
 
-	abook_list_free(&glist);	
+	abook_list_free(&glist);
 
 	/* alias */
 	start = ptr;
@@ -1070,7 +1068,7 @@ html_export_database(FILE *out, struct db_enumerator e)
 		for(cur = index_elements; cur; cur = cur->next) {
 			if(cur->type != INDEX_FIELD)
 				continue;
-			
+
 			get_list_field(e.item, cur, &f);
 
 			fprintf(out, "  <td>");

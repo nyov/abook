@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * Common xmalloc memory allocation routines
  *
  * written by Jaakko Heinonen <jheinonen@users.sourceforge.net>

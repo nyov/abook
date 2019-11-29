@@ -1,7 +1,5 @@
 
 /*
- * $Id$
- *
  * by JH <jheinonen@users.sourceforge.net>
  *
  * Copyright (C) Jaakko Heinonen
@@ -173,7 +171,7 @@ print_list_field(int item, int line, int *x_pos, struct index_elem *e)
 		*x_pos += len;
 		return;
 	}
-	
+
 	if(f.type == FIELD_EMAILS && !opt_get_bool(BOOL_SHOW_ALL_EMAILS))
 		if((p = strchr(s, ',')) != NULL) {
 			s = xstrndup(s, p - s);
@@ -190,7 +188,7 @@ print_list_field(int item, int line, int *x_pos, struct index_elem *e)
 
 	if(mustfree)
 		free(s);
-		
+
 	*x_pos += len ? len : width;
 }
 
@@ -559,7 +557,7 @@ int
 duplicate_item()
 {
 	list_item item;
-	
+
 	if(curitem < 0)
 		return 1;
 

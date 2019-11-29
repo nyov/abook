@@ -1,7 +1,5 @@
 
 /*
- * $Id$
- *
  * by JH <jheinonen@users.sourceforge.net>
  *
  * Copyright (C) Jaakko Heinonen
@@ -386,7 +384,7 @@ save_database(int force_save)
 	if(access(datafile, F_OK) == 0 &&
 			(rename(datafile, datafile_old)) == -1)
 		ret = -1;
-	
+
 	if((rename(datafile_new, datafile)) == -1)
 		ret = -1;
 
@@ -508,7 +506,7 @@ add_item2database(list_item item)
 
 	return 0;
 }
-	
+
 
 void
 remove_selected_items()
@@ -627,7 +625,7 @@ surnamecmp(const void *i1, const void *i2)
 
 	n1 = (*(list_item *)i1)[idx];
 	n2 = (*(list_item *)i2)[idx];
-	
+
 	s1 = get_surname(n1);
 	s2 = get_surname(n2);
 
@@ -842,7 +840,7 @@ item_duplicate(list_item dest, list_item src)
 	for(i = 0; i < fields_count; i++)
 		dest[i] = src[i] ? xstrdup(src[i]) : NULL;
 }
- 
+
 /*
  * Merging works as follows:
  * - fields present only in source are copied over to dest
@@ -877,7 +875,7 @@ item_merge(list_item dest, list_item src)
 	item_empty(src);
 }
 
-/* 
+/*
  * Things like item[field_id(NICK)] should never be used, since besides NAME
  * and EMAIL, none of the standard fields can be assumed to be existing.
  *

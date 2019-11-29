@@ -1,7 +1,5 @@
 
 /*
- * $Id$
- *
  * by JH <jheinonen@users.sourceforge.net>
  *
  * Copyright (C) Jaakko Heinonen
@@ -27,7 +25,7 @@
 #endif
 #if defined(HAVE_LOCALE_H) && defined(HAVE_SETLOCALE)
 #       include <locale.h>
-#endif 
+#endif
 
 
 static void locale_date(char *str, size_t str_len, int year, int month, int day);
@@ -233,7 +231,7 @@ editor_print_data(int tab, int item)
 		if((cur->field->type == FIELD_EMAILS) ||
 				(cur->field->type == FIELD_LIST)) {
 			abook_list *emails, *e;
-			
+
 			find_field_number(cur->field->key, &nb);
 			emails = csv_to_abook_list(db_fget_byid(item, nb));
 
@@ -260,7 +258,7 @@ editor_print_data(int tab, int item)
 
 			find_field_number(cur->field->key, &nb);
 			str = db_fget_byid(item, nb);
-			
+
 			if(parse_date_string(str, &day, &month, &year)) {
 				/* put locale representation of date in buf */
 				locale_date(buf, sizeof(buf), year, month, day);
@@ -615,7 +613,7 @@ edit_field(int tab, char c, int item_number)
 	}
 
 	find_field_number(f->field->key, &idx);
-	
+
 	switch(f->field->type) {
 		case FIELD_STRING:
 			msg = strdup_printf("%s: ", f->field->name);

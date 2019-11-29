@@ -1,6 +1,5 @@
 
 /*
- * $Id$
  * adapted to use with abook by JH <jheinonen@users.sourceforge.net>
  */
 

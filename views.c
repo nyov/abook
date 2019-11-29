@@ -1,6 +1,4 @@
 /*
- * $Id$
- *
  * by Cedric Duval <cedricduval@free.fr>
  *
  * Copyright (C) Cedric Duval
@@ -49,7 +47,7 @@ create_view(char *name) {
 
 	if(v) {
 		v->next = xmalloc(sizeof(abook_view));
-		v = v->next;		
+		v = v->next;
 	} else
 		abook_views = v = xmalloc(sizeof(abook_view));
 
@@ -85,7 +83,7 @@ add_field_to_view(char *viewname, char *field)
 			!(f = find_standard_field(field, 1 /*do_declare*/))
 		)
 		return _("undeclared field");
-	
+
 	if((v = find_view(viewname)) == NULL)
 		v = create_view(viewname);
 	else if(fields_in_view(v) == MAX_VIEW_FIELDS)
@@ -95,7 +93,7 @@ add_field_to_view(char *viewname, char *field)
 		return _("field already in this view");
 
 	add_field(&v->fields, f);
-	
+
 	return NULL;
 }
 
@@ -105,7 +103,7 @@ view_info(int number, char **name, abook_field_list **fields)
 	abook_view *cur = abook_views;
 
 	assert((number < views_count) && (number >= 0));
-	
+
 	while(i++ != number)
 		cur = cur->next;
 
@@ -123,7 +121,7 @@ init_default_views()
 {
 	char *str;
 	int i, j, add_custom_fields, add_custom_view = 0;
-	
+
 	add_custom_fields =
 		!strcasecmp(opt_get_str(STR_PRESERVE_FIELDS), "standard");
 
